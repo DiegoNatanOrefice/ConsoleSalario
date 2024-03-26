@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,59 +11,74 @@ namespace ConsoleSalario
     {
         static void Main(string[] args)
         {
-            Console.Write("Insira a forma de contratação (A - Assalariado, C - Comissionado, H - Horista): ");
-            string contratacao = Console.ReadLine();
+            int continuar = 1;
+            double totalsalariofinal = 0;
 
-            double salarioliq = 0;
-
-            switch (contratacao)
+            while (continuar == 1)
             {
-                case "A":
-                    Console.Write("Insira o salário bruto: ");
-                    double asalariob = double.Parse(Console.ReadLine());
-                    Console.Write("Insira o valor do desconto: ");
-                    double adesconto = double.Parse(Console.ReadLine());
-                    salarioliq = asalariob - adesconto;
-                    break;
+                Console.Write("Qual o tipo de contratação?(A - Assalariado | C - Comissionado | H - Horista): ");
+                string contratacao = Console.ReadLine().ToUpper();
 
-                case "C":
-                    Console.Write("Insira a quantidade de peças vendidas: ");
-                    int cvendas = int.Parse(Console.ReadLine());
-                    Console.Write("Insira a comissão por peça vendida: ");
-                    double ccomissao = int.Parse(Console.ReadLine());
-                    salarioliq = cvendas * ccomissao;
-                    break;
+                if (contratacao == "A")
+                {
+                    Console.Write("Insira o salário líquido do funcionário: ");
+                    double asalarioliq = double.Parse(Console.ReadLine());
 
-                case "H":
+                    totalsalariofinal += asalarioliq;
+
+                    Console.Write("Deseja continuar? (1 para sim | 0 para não): ");
+                    continuar = int.Parse(Console.ReadLine());
+
+                    Console.Clear();
+                }
+                else if (contratacao == "C")
+                {
+                    Console.Write("Insira o valor das vendas: ");
+                    double cvendas = double.Parse(Console.ReadLine());
+
+                    Console.Write("Insira a porcentagem de comissão: ");
+                    double ccomissao = double.Parse(Console.ReadLine());
+
+                    double csalarioliq = cvendas * (ccomissao / 100);
+
+                    totalsalariofinal += csalarioliq;
+
+                    Console.Write("Deseja continuar? (1 para sim | 0 para não): ");
+                    continuar = int.Parse(Console.ReadLine());
+
+                    Console.Clear();
+                }
+                else if (contratacao == "H")
+                {
                     Console.Write("Insira a quantidade de horas trabalhadas: ");
-                    int hhoras = int.Parse(Console.ReadLine());
-                    Console.Write("Insira o valor da hora: ");
-                    double hvalor = int.Parse(Console.ReadLine());
-                    salarioliq = hhoras * hvalor;
-                    break;
+                    double hhoras = double.Parse(Console.ReadLine());
+
+                    Console.Write("Insira o valor pago por hora: ");
+                    double hvalor = double.Parse(Console.ReadLine());
+
+                    double hsalarioliq = hhoras * hvalor;
+
+                    totalsalariofinal += hsalarioliq;
+
+                    Console.Write("Deseja continuar? (1 para sim | 0 para não): ");
+                    continuar = int.Parse(Console.ReadLine());
+
+                    Console.Clear();
+                }
+                else
+                {
+                    Console.Write("A letra digitada não corresponde a um tipo de contratação");
+                    Console.ReadKey();
+
+                    Console.Write("Deseja continuar? (1 para sim | 0 para não): ");
+                    continuar = int.Parse(Console.ReadLine());
+
+                    Console.Clear();
+                }
             }
-            if (salarioliq <= 2000) 
-            {
-                salarioliq = salarioliq * 0.925;
-                Console.Write("O salário líquido é: " + salarioliq);
-                Console.ReadKey();
-            }
-            else if (salarioliq <= 4000)
-            {
-                salarioliq = salarioliq * 0.88;
-                Console.Write("O salário líquido é: " + salarioliq);
-                Console.ReadKey();
-            }
-            else if (salarioliq > 4000)
-            {
-                salarioliq = salarioliq * 0.85;
-                Console.Write("O salário líquido é: " + salarioliq);
-                Console.ReadKey();
-            }
-            else
-            {
-                Console.WriteLine("Erro");
-            }
+
+            Console.Write("O total a ser pago para os funcionários é: " + totalsalariofinal);
+            Console.ReadKey();
         }
     }
 }
